@@ -1,0 +1,86 @@
+openapi: 3.0.3  
+info:  
+  title: Flights API  
+  description: API for retrieving flight information  
+  version: 1.0.0  
+paths:  
+  /flights:  
+    get:  
+      summary: List all flights  
+      description: Returns a list of flights based on search criteria  
+      parameters:  
+        - name: origin  
+          in: query  
+          description: Origin airport code  
+          schema:  
+            type: string  
+        - name: destination  
+          in: query  
+          description: Destination airport code  
+          schema:  
+            type: string  
+        - name: date  
+          in: query  
+          description: Flight date (YYYY-MM-DD)  
+          schema:  
+            type: string  
+            format: date  
+      responses:  
+        '200':  
+          description: A list of flights  
+          content:  
+            application/json:  
+              schema:  
+                type: array  
+                items:  
+                  $ref: '#/components/schemas/Flight'  
+  /flights/{id}:  
+    get:  
+      summary: Get flight by ID  
+      parameters:  
+        - name: id  
+          in: path  
+          required: true  
+          description: Flight ID  
+          schema:  
+            type: string  
+      responses:  
+        '200':  
+          description: Flight details  
+          content:  
+            application/json:  
+              schema:  
+                $ref: '#/components/schemas/Flight'  
+        '404':  
+          description: Flight not found  
+components:  
+  schemas:  
+    Flight:  
+      type: object  
+      properties:  
+        id:  
+          type: string  
+          description: Unique flight identifier  
+        flightNumber:  
+          type: string  
+          description: Flight number  
+        origin:  
+          type: string  
+          description: Origin airport code  
+        destination:  
+          type: string  
+          description: Destination airport code  
+        departureTime:  
+          type: string  
+          format: date-time  
+          description: Scheduled departure time  
+        arrivalTime:  
+          type: string  
+          format: date-time  
+          description: Scheduled arrival time  
+        aircraft:  
+          type: string  
+          description: Aircraft type  
+        availableSeats:  
+          type: integer  
+          description: Number of available seats  
