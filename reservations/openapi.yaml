@@ -1,0 +1,93 @@
+openapi: 3.0.3  
+info:  
+  title: Reservations API  
+  description: API for managing flight reservations  
+  version: 1.0.0  
+paths:  
+  /reservations:  
+    post:  
+      summary: Create a new reservation  
+      requestBody:  
+        required: true  
+        content:  
+          application/json:  
+            schema:  
+              $ref: '#/components/schemas/ReservationRequest'  
+      responses:  
+        '201':  
+          description: Reservation created  
+          content:  
+            application/json:  
+              schema:  
+                $ref: '#/components/schemas/Reservation'  
+  /reservations/{id}:  
+    get:  
+      summary: Get reservation by ID  
+      parameters:  
+        - name: id  
+          in: path  
+          required: true  
+          description: Reservation ID  
+          schema:  
+            type: string  
+      responses:  
+        '200':  
+          description: Reservation details  
+          content:  
+            application/json:  
+              schema:  
+                $ref: '#/components/schemas/Reservation'  
+        '404':  
+          description: Reservation not found  
+components:  
+  schemas:  
+    ReservationRequest:  
+      type: object  
+      required:  
+        - flightId  
+        - passengerName  
+        - seatNumber  
+      properties:  
+        flightId:  
+          type: string  
+          description: ID of the flight to book  
+        passengerName:  
+          type: string  
+          description: Name of the passenger  
+        contactEmail:  
+          type: string  
+          format: email  
+          description: Contact email address  
+        seatNumber:  
+          type: string  
+          description: Requested seat number  
+    Reservation:  
+      type: object  
+      properties:  
+        id:  
+          type: string  
+          description: Unique reservation identifier  
+        status:  
+          type: string  
+          enum: [confirmed, pending, cancelled]  
+          description: Current status of the reservation  
+        flightId:  
+          type: string  
+          description: ID of the booked flight  
+        flightNumber:  
+          type: string  
+          description: Flight number  
+        passengerName:  
+          type: string  
+          description: Name of the passenger  
+        contactEmail:  
+          type: string  
+          format: email  
+          description: Contact email address  
+        seatNumber:  
+          type: string  
+          description: Assigned seat number  
+        created:  
+          type: string  
+          format: date-time  
+          description: Creation timestamp  
